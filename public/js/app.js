@@ -5397,73 +5397,6 @@ shop_modal = {
         window.location.href = url;
       }
     });
-  },
-  generalModal: function generalModal(url, type, confirm_button_text, cancel_button_text) {
-    if (!confirm_button_text) {
-      confirm_button_text = "Ok";
-    }
-
-    if (!cancel_button_text) {
-      cancel_button_text = "Cancel";
-    }
-
-    Swal.fire({
-      title: 'Are you sure?',
-      icon: type,
-      showCancelButton: true,
-      confirmButtonText: confirm_button_text,
-      cancelButtonText: cancel_button_text,
-      buttonsStyling: false,
-      customClass: {
-        confirmButton: 'btn btn-primary btn-wh-140-50 me-2',
-        cancelButton: 'btn btn-outline-danger btn-wh-140-50'
-      }
-    }).then(function (result) {
-      if (result.value) {
-        window.location.href = url;
-      }
-    });
-  },
-  defaultModal: function defaultModal(url, title) {
-    $.ajax({
-      url: url,
-      success: function success(response) {
-        $('#defaultModel #modalTitle').html(title);
-        $('#defaultModel .modal-body').html("");
-        $('#defaultModel .modal-body').html(response);
-      }
-    });
-    $('#defaultModel').modal('show', {
-      backdrop: 'true'
-    });
-  },
-  largeModel: function largeModel(url, title) {
-    $.ajax({
-      url: url,
-      success: function success(response) {
-        $('#largeModel #modalTitle').html(title);
-        $('#largeModel .modal-body').html("");
-        $('#largeModel .modal-body').html(response); // shop_app.numericCheck();
-        // floatinformINIT();
-      }
-    });
-    $('#largeModel').modal('show', {
-      backdrop: 'true'
-    });
-  },
-  xlargeModel: function xlargeModel(url, title) {
-    $.ajax({
-      url: url,
-      success: function success(response) {
-        $('#xlargeModel #xlmodalTitle').html(title);
-        $('#xlargeModel .modal-body').html("");
-        $('#xlargeModel .modal-body').html(response); // shop_app.numericCheck();
-        // floatinformINIT();
-      }
-    });
-    $('#xlargeModel').modal('show', {
-      backdrop: 'true'
-    });
   }
 };
 shop_app = {
@@ -5487,22 +5420,6 @@ shop_app = {
       async: false
     });
   },
-  getckeditor: function getckeditor(element, ck_config) {
-    if (ck_config == "") {
-      var ck_config = {
-        height: '20em',
-        removeButtons: 'Source,Templates,Save,NewPage,ExportPdf,Preview,Print,Cut,Undo,Redo,Copy,Paste,PasteText,PasteFromWord,Find,Replace,SelectAll,Scayt,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,About,Maximize,BGColor,ShowBlocks,TextColor,Styles,Format,Font,FontSize,Iframe,Flash,Table,Image,HorizontalRule,Smiley,SpecialChar,PageBreak,Link,Unlink,Anchor,Language,BidiRtl,BidiLtr,JustifyLeft,Blockquote,Outdent,Indent,CreateDiv,JustifyCenter,JustifyRight,JustifyBlock,BulletedList,NumberedList,CopyFormatting,RemoveFormat,Underline,Strike,Superscript,Subscript',
-        removePlugins: 'elementspath'
-      };
-    }
-
-    var eleid = element.attr('id');
-
-    if ($('#' + eleid).length) {
-      CKEDITOR.replace(eleid, ck_config);
-      CKEDITOR.config.allowedContent = true;
-    }
-  },
   notifyWithtEle: function notifyWithtEle(msg, type, pos, timeout) {
     pos = "";
     timeout = "";
@@ -5517,41 +5434,8 @@ shop_app = {
       killer: true
     });
     noty.show();
-  },
-  readURL: function readURL(input, image) {
-    var fileInput = input;
-    var filePath = fileInput.val();
-    var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.svg)$/i;
-
-    if (!allowedExtensions.exec(filePath)) {
-      shop_app.notifyWithtEle('Only png and jpg file is allowed.', 'error');
-      fileInput.val('');
-    } else {
-      if (input[0].files && input[0].files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-          image.attr('src', e.target.result);
-        };
-
-        reader.readAsDataURL(input[0].files[0]);
-      }
-    }
   }
 };
-$(document).on('keydown', '.numbersOnly', function (e) {
-  if ($.inArray(e.keyCode, [8, 9, 27, 13, 189, 110]) !== -1 || e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true) || e.keyCode >= 35 && e.keyCode <= 40) {
-    return;
-  }
-
-  if ((e.shiftKey || e.keyCode < 48 || e.keyCode > 57) && (e.keyCode < 96 || e.keyCode > 105)) {
-    // alert("Dont allow");
-    e.preventDefault();
-  }
-});
-$(document).on('keydown input', '.charOnly', function (e) {
-  if ($.inArray(e.keyCode, [8, 9, 13, 16, 17, 18, 19, 20, 27, 33, 34, 35, 36, 37, 38, 40, 45, 46, 32]) !== -1 || e.ctrlKey === true || e.metaKey === true || e.keyCode >= 65 && e.keyCode < 93) return;else e.preventDefault();
-});
 
 /***/ }),
 
