@@ -5339,62 +5339,55 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
   \**********************************/
 /***/ (() => {
 
+$(function () {
+  shop_validation.init();
+});
 shop_validation = {
   init: function init() {
-    $('#signInForm').validate({
+    $('#customerForm').validate({
       rules: {
-        email: {
+        first_name: {
           required: true
         },
-        password: {
-          required: true,
-          minlength: 6,
-          maxlength: 20
+        last_name: {
+          required: true
+        },
+        shop_id: {
+          required: true
         }
       },
       messages: {
-        email: {
-          required: "Please enter email address."
+        first_name: {
+          required: "Please enter first_name."
         },
-        password: {
-          required: "Please enter password.",
-          minlength: "Please enter minimum 6 characters."
+        last_name: {
+          required: "Please enter last_name."
+        },
+        shop_id: {
+          required: "Please Select shop."
         }
       },
       submitHandler: function submitHandler(form) {
         var l = Ladda.create($(form).find('button').get(0));
         l.start();
-        form.submit();
-      }
-    });
-  }
-};
-shop_loader = {
-  start: function start(element) {
-    element.attr('disabled', 'disabled').addClass('spinner-text').append('<div class="spinner"><span class="double-bounce1"></span><span class="double-bounce2"></span></div>');
-  }
-};
-shop_modal = {
-  confirmModal: function confirmModal(url) {
-    var text = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+        var formData = new FormData(form); // console.log(formData);
 
-    if (text == '') {
-      text = 'Yes, delete it!';
-    }
+        shop_app.ajaxRequest($(form).attr("action"), formData).then(function (res) {
+          l.stop();
+          console.log(res.data.message);
 
-    Swal.fire({
-      title: 'Are you sure?',
-      icon: 'error',
-      showCancelButton: true,
-      confirmButtonText: text,
-      buttonsStyling: false,
-      customClass: {
-        confirmButton: 'btn btn-primary btn-wh-140-50 me-2',
-        cancelButton: 'btn btn-outline-danger btn-wh-140-50'
-      }
-    }).then(function (result) {
-      if (result.value) {
-        window.location.href = url;
+          if (res.data.success == true) {
+            $('#customer-list').html(res.data.customers);
+            $('#customerForm').each(function () {
+              this.reset();
+            });
+            $('#data').html(res.data.form_data);
+            toastr.success(res.data.message);
+          } else {
+            toastr.error('something went wrong!');
+          }
+        });
+        return false;
       }
     });
   }
@@ -5414,17 +5407,18 @@ shop_app = {
       url: reqURL,
       method: reqMethod != "" ? reqMethod : "post",
       headers: {
-        'Content-Type': reqDataType != "" ? reqDataType : "application/x-www-form-urlencoded"
+        'Content-Type': "multipart/form-data"
       },
       data: reqData,
       async: false
     });
   },
-  notifyWithtEle: function notifyWithtEle(msg, type, pos, timeout) {
+  notifyWithtEle: function notifyWithtEle(msg, type) {
+    var pos = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+    var timeout = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "";
     pos = "";
     timeout = "";
     var noty = new Noty({
-      theme: 'metroui',
       text: msg,
       type: type,
       layout: pos != "" ? pos : 'topRight',

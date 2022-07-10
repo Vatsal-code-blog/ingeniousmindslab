@@ -14,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        view()->share('SITE_NAME', 'Practical' );
+        view()->share('THEME_PATH', url('resources') );
+        view()->share('UPLOAD_PATH', url('public/uploads') );
     }
 
     /**

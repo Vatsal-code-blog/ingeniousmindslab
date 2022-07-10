@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\shopController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('customer');
+});
+
+## shopController
+Route::group(['prefix'=>'/customer'], function(){
+    Route::get('',[shopController::class,'index']);
+    Route::get('/edit/{id}',[shopController::class,'Edit']);
+    Route::get('/delete/{id}',[shopController::class,'Delete']);
+    Route::post('/save/',[shopController::class,'Action']);
 });

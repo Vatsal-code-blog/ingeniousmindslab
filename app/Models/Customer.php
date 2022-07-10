@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Customer extends Model
 {
     use HasFactory,SoftDeletes;
+    protected $table = 'customers'; 
 
     protected $fillable = [
         'id',
@@ -19,5 +20,15 @@ class Customer extends Model
         'city',
         'birthdate'
     ];
+
+    public function getFullNameAttribute()
+    {
+        return ucwords("{$this->first_name} {$this->last_name}");
+    }
+
+    public function Shop()
+    {
+        return $this->hasOne(Shop::class,'id','shop_id');
+    }
 
 }
