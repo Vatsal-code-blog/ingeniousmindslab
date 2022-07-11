@@ -15,7 +15,7 @@ use App\Http\Controllers\shopController;
 */
 
 Route::get('/', function () {
-    return view('customer');
+    return view('welcome');
 });
 
 ## shopController

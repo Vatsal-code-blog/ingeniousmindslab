@@ -17,7 +17,8 @@ class shopController extends Controller
 	}
 
 	public function index(Request $request) {
-        $customers = CustomerModel::orderBy('id', 'DESC')->paginate(10);
+        $customers = CustomerModel::orderBy('id', 'DESC')->get();
+        // dd(count($customers));
         $shops = ShopModel::all();
 		$_data=array(
             'actionURL'=>$this->actionURL,
